@@ -5,27 +5,37 @@ import Typography from '@mui/material/Typography';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 import { useNavigate } from 'react-router';
 import FormControl from '@mui/material/FormControl';
 import RadioGroup from '@mui/material/RadioGroup';
 import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import TextField from '@mui/material/TextField';
+import { useLocation } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
 
 
 const AllQues = () => {
+
   const [buttonClickCont, setbuttonClickCont] = useState<number>(1);
-  // const [allquesstate, setAllQuesState] = useState<any>();
-  // const [value, setValue] = useState<any>();
-  
-  
-  
+  const [answer, setAswer] = useState<any>({});
+  const [value, setValue] = useState<any>();
 
   const navigate = useNavigate();
+  
+  const location:any = useLocation();
+  const val = location.state; 
+
+  const state ={
+    answer: answer,
+    val: val
+  }
 
   const btnHandler1 = () => {
-    navigate(`/report`, { state: userCondition } );
+    navigate(`/report`, { state: state})
   };
+
+
 
 
 
@@ -37,12 +47,12 @@ const AllQues = () => {
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setbuttonClickCont(value);
   };
-  
+
 
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 
-  const userCondition = [
+  const userCondition= [
 
     {
       quesText: " What is JavaScript ?",
@@ -50,9 +60,9 @@ const AllQues = () => {
       Ques: 1,
       correctAnswer: [1, 3],
       QuesType: "multiple",
-      userAnswer: ["value"],
+      userAnswer: [],
       option: {
-        1: "JavaScript is a powerful programming language", 
+        1: "JavaScript is a powerful programming language",
         2: "JavaScript is a bad programming language .",
         3: "JavaScript is a scrpting language"
       },
@@ -69,11 +79,11 @@ const AllQues = () => {
       userAnswer: "",
       option: {
         1: "npm build.",
-        2: "npm start.", 
-        3: "node start",  
+        2: "npm start.",
+        3: "node start",
       },
 
-    },  
+    },
 
 
     {
@@ -93,7 +103,7 @@ const AllQues = () => {
       quesText: " Choose Correct Answer",
       id: 4,
       Ques: 4,
-      userAnswer: [""],
+      userAnswer: [],
       correctAnswer: [1, 2, 3],
       QuesType: "multiple",
       option: {
@@ -117,52 +127,94 @@ const AllQues = () => {
       },
     }
   ];
+
+  const btnhandler = (qid: any, e: any) => {
+
+    // if (Array.isArray(userCondition[qid].userAnswer)) {
+    //   setAswer({...answer, [qid]:answer?.[qid] ? [...answer[qid],e.target.value]:[e.target.value]})
+    // } else {
+    //   setAswer({...answer, [qid]:e.target.value})
+    // }
+    // setValue(e.target.value); 
+  };
+
+
+  const useStyles = makeStyles({
+    root: {
+      background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+      border: 0,
+      borderRadius: 3,
+      boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+      color: 'white',
+      height: 48,
+      padding: '0 30px',
+    },
+
+    blue:{
+      color:'blue',
+    },
+
+    red:{
+      color:'red',
+    },
+
+    gray:{
+      color:'gray',
+    },
+
+    ul: {
+      "& .MuiPaginationItem-root": {
+        color: "red"
+      }
+    }
+
+  });
+  const classes = useStyles();
   
-  const btnhandler = (qid:any,e:any ) => {
-  
-  };  
- 
+
+
+
 
   return (
     <div>
       <>
         <Stack spacing={2}>
-          <Typography>Page: {buttonClickCont}</Typography>
-          <Pagination count={5} page={buttonClickCont} onChange={handleChange} />
+       <p><Typography className={classes.root}><h1>Name:{val}</h1></Typography></p> 
+          <Pagination classes={{ ul: classes.ul }} count={5} page={buttonClickCont} onChange={handleChange} />
         </Stack>
         {buttonClickCont === 1 ? (
           <>
-            <h2>
+            <h2 data-testid="custom-element">
               Question 1 :-  {userCondition[0].quesText}
             </h2>
-            <p><Checkbox {...label} size="small"  value="1" id="1"  onChange={(e:any)=>btnhandler(0, e)}  />
+            <p><Checkbox {...label} size="small" value={1} id="1"  onChange={(e: any) => btnhandler(0, e)} />
               <span> {userCondition[0].option[1]}</span>
             </p>
 
 
-            <p><Checkbox {...label} size="small" value="2" id="2" onChange={(e:any)=>btnhandler(0, e)} />
+            <p><Checkbox {...label} size="small" value={2} id="2" onChange={(e: any) => btnhandler(0, e)} />
               <span> {userCondition[0].option[2]}</span>
             </p>
 
-            <p><Checkbox {...label} size="small" value="3" id="3" onChange={(e:any)=>btnhandler(0, e)} />
+            <p><Checkbox {...label} size="small" value={3} id="3" onChange={(e: any) => btnhandler(0, e)} />
               <span> {userCondition[0].option[3]}</span>
             </p>
           </>
-        ) : null} 
+        ) : null}
 
         {/* second ques */}
 
         {buttonClickCont === 2 ? (
           <>
-<h2>Question 2 :- {userCondition[1].quesText}</h2>
-<FormControl>
-    <RadioGroup>
-     <FormControlLabel value="1"  id ="1" control={<Radio />} label="npm build."  onChange={(e:any)=>btnhandler(1, e)} />
-     <FormControlLabel value="2"  id= "2"control={<Radio />} label="npm start." onChange={(e:any)=>btnhandler(1, e)} />
-     <FormControlLabel value="3" id="3" control={<Radio />} label="node start"   onChange={(e:any)=>btnhandler(1, e)} />
-    </RadioGroup>
-</FormControl>
-    <br/>
+            <h2>Question 2 :- {userCondition[1].quesText}</h2>
+            <FormControl>
+              <RadioGroup>
+                <FormControlLabel value="1" id="1" control={<Radio />} label="npm build." onChange={(e: any) => btnhandler(1, e)} />
+                <FormControlLabel value="2" id="2" control={<Radio />} label="npm start." onChange={(e: any) => btnhandler(1, e)} />
+                <FormControlLabel value="3" id="3" control={<Radio />} label="node start" onChange={(e: any) => btnhandler(1, e)} />
+              </RadioGroup>
+            </FormControl>
+            <br />
           </>
         ) : null}
 
@@ -180,7 +232,8 @@ const AllQues = () => {
               noValidate
               autoComplete="off"
             >
-              {/* <TextField label="Answer" variant="standard" id="3" value={userCondition[2].userAnswers} onChange={(e:any)=>btnhandler(2, e)}  /> */}
+              <TextField label="Answer" variant="standard" id="1" value={value}  onChange={(e:any)=>btnhandler(2, e)}/>
+
             </Box>
           </>
         ) : null}
@@ -203,9 +256,9 @@ const AllQues = () => {
               <span>{userCondition[3].option[3]}</span>
             </p>
 
-            <p><Checkbox {...label} size="small" value="1" id="1" onChange={(e:any)=>btnhandler(2, e)}  /><span>A</span></p>
-            <p><Checkbox {...label} size="small" value="2" id="2" onChange={(e:any)=>btnhandler(2, e)}  /><span>B</span></p>
-            <p><Checkbox {...label} size="small" value="3" id="3" onChange={(e:any)=>btnhandler(2, e)}  /><span>C</span></p>
+            <p><Checkbox {...label} size="small" value="1" id="1" onChange={(e:any)=>btnhandler(3, e)}/><span>A</span></p>
+            <p><Checkbox {...label} size="small" value="2" id="2" onChange={(e:any)=>btnhandler(3, e)}/><span>B</span></p>
+            <p><Checkbox {...label} size="small" value="3" id="3" onChange={(e:any)=>btnhandler(3, e)}/><span>C</span></p>
           </>
         ) : null}
 
@@ -218,17 +271,17 @@ const AllQues = () => {
               Question 5 : <br /> {userCondition[4].quesText}.
             </h2>
             <FormControl>
-                    <RadioGroup
-                        row
-                        aria-labelledby="demo-row-radio-buttons-group-label"
-                        name="row-radio-buttons-group"
-                    >
-                        <FormControlLabel value="1" id="1" control={<Radio />} label="True" onChange={(e:any)=>btnhandler(3, e)} />
-                        <br/>
-                        <FormControlLabel value="2" id="2" control={<Radio />} label="False" onChange={(e:any)=>btnhandler(3, e)} />
-                     
-                    </RadioGroup>
-                </FormControl>
+              <RadioGroup
+                row
+                aria-labelledby="demo-row-radio-buttons-group-label"
+                name="row-radio-buttons-group"
+              >
+                <FormControlLabel value="1" id="1" control={<Radio />} onChange={(e:any)=>btnhandler(4, e)} label="True" />
+                <br />
+                <FormControlLabel value="2" id="2" control={<Radio />} onChange={(e:any)=>btnhandler(4, e)} label="False" />
+
+              </RadioGroup>
+            </FormControl>
             <div>
               <Button variant="contained" color="success" type="submit"
                 onClick={() => {

@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
-import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
-import Checkbox from '@mui/material/Checkbox';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormLabel from '@mui/material/FormLabel';
@@ -13,28 +11,16 @@ import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
 
 const InputField = () => {
-    const [state, setState] = React.useState({
-        Reactjs: false,
-        Python: false,
-        C: false,
-    });
     const [value, setValue] = useState<any>()
-
     const handleChange = (event: any) => {
         setValue(event.target.value);
-        setState({
-            ...state,
-            [event.target.name]: event.target.checked,
-        });
-    console.log(event.target.value)
     };
 
-    const { Reactjs, Python, C } = state;
-    const error = [Reactjs, Python, C].filter((v) => v).length !== 1;
 
-    const navigate = useNavigate();   
-    const handleClick = () => navigate(`/allques/` ,{state:value});
-
+    const navigate = useNavigate();
+    const handleClick = () => navigate(`/allques/`, { state: value });
+    // console.log(value);
+    
     return (
         <div>
             <Box sx={{
@@ -49,40 +35,21 @@ const InputField = () => {
 
             <div>
                 <Box>
-                    <FormControl
-                        required
-                        error={error}
-                        component="fieldset"
-                        sx={{ m: 3 }} 
-                        variant="standard"
-                    >
+                    <FormControl>
 
                         <FormHelperText>Please choose language & Pick One Option</FormHelperText>
 
-                        <FormGroup>
-                            <FormControlLabel
-                                control={
-                                    <Checkbox checked={Reactjs} onChange={handleChange}   name="Reactjs" />
-                                }
-                                label="Reactjs"
-                            />
-                            <FormControlLabel
-                                control={
-                                    <Checkbox checked={Python} onChange={handleChange} name="Python" />
-                                }
-                                label="Python"
-                            />
-                            <FormControlLabel
-                                control={
-                                    <Checkbox checked={C} onChange={handleChange} name="C" />
-                                }
-                                label="C"
-                            />
-                        </FormGroup>
+                        <RadioGroup
+                        aria-labelledby="demo-row-radio-buttons-group-label"
+                        name="row-radio-buttons-group"
+                    >
+                        <FormControlLabel value="React.js" control={<Radio />} label="React.js" />
+                        <FormControlLabel value="Java" control={<Radio />} label="Java" />
+                        <FormControlLabel value="C Programming" control={<Radio />} label="C Programming" />
+                    </RadioGroup>
                     </FormControl>
                 </Box>
-            </div>
-
+            </div> 
 
             {/* choose gende */}
             <div>
@@ -100,12 +67,12 @@ const InputField = () => {
                 </FormControl>
 
             </div>
-         
-                <Button variant="contained" disabled={!value} color="success"  onClick={() => {
-                    handleClick()
-          }}>
-              Start
-              </Button>
+
+            <Button variant="contained" disabled={!value} color="success" onClick={() => {
+                handleClick()
+            }}>
+                Start
+            </Button>
         </div>
     )
 }
